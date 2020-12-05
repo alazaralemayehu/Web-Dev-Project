@@ -7,13 +7,13 @@ const CONCURRENT_CONNECTIONS = 5;
 const connectionPool = new Pool(config.database, CONCURRENT_CONNECTIONS);
 
 const executeQuery = async(query, ...args) => {
-  const client = connectionPool.connect();
+  const client = await connectionPool.connect();
   try {
     return await client.query(query, ...args);
   } catch (e) {
     console.log(e);
   } finally {
-    await client.release();
+    client.release();
   }
 }
 

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Reporting</h1>
+    <form action="/addReport" method="post">
+        <div>
+            <label for="time_of_day">time of day</label>
+            <select name="time_of_day" id="time_of_day">
+                <option value="morning">Morning</option>
+                <option value="evening">Evening</option>
+            </select>
+            
+        </div>
+       <div>
+            <label for="sleep_duration">Sleep Duration: </label><input type="number" step=".1" name="sleep_duration" id="sleep_duration">
+       </div> 
+
+       <div>
+            <label for="sleep_quality">Sleep Quality: </label> <input type="number" name="sleep_quality" id="sleep_quality">
+        </div>
+
+        <div>
+            <label for="generic_mood">Generic Mood: </label> <input type="number" name="generic_mood" id= "generic_mood">
+        </div>
+        
+        <div>
+            <label for="date">Date </label><input type="date" name="date" id="date"> <label for="date_now">
+            </label>today<input type="radio" name="date_today" id="date_today">
+        </div>
+         
+        <input type="submit" value="Add Report!">
+    </form>
+</body>
+</html>
