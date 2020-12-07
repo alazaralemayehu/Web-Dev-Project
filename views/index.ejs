@@ -1,0 +1,15 @@
+<%- include('./partials/header.ejs') %>
+<h1>Last Two days report for all users looks like</h1>
+<ul>
+    <% data.weekly_summary.forEach((w_summary) => { %>
+        <li><%= w_summary.activity_type %>: <%= (w_summary.round)%></li>
+    <% }); %>
+</ul>
+<div>
+    Please either <a href="/auth/register" class="btn btn-success">Register</a> to be part of Us. <br>
+</div>
+<div>
+    please <a href="/auth/login" class="btn btn-success">Login</a>
+</div>
+
+<%- include('./partials/footer.ejs') %>

@@ -16,8 +16,8 @@ app.use(viewEngine(oakAdapter, ejsEngine, {
     viewRoot: "./views"
 }));
 
-// app.use(authMiddleware);
 app.use(middleware.errorMiddleware);
+// app.use(authMiddleware);
 app.use(middleware.requestInformationMiddleware);
 app.use(middleware.serveStaticFilesMiddleware);
 

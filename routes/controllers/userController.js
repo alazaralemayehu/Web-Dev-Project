@@ -1,4 +1,5 @@
 import { getUser, addNewUser } from "../../services/userService.js";
+import * as bcrypt from "https://deno.land/x/bcrypt@v0.2.4/mod.ts";
 
 
 const login = async({request, response, session}) => {
@@ -9,7 +10,7 @@ const login = async({request, response, session}) => {
     const password = params.get('password');
 
     // check if the email exists in the database
-    const userObj = await executeQuery("SELECT * FROM users WHERE email = $1;", email);
+    const userObj = await getUser(email);
     if (userObj === null) {
         response.status = 401;
         return;
@@ -20,23 +21,26 @@ const login = async({request, response, session}) => {
 
     const passwordCorrect = await bcrypt.compare(password, hash);
     if (!passwordCorrect) {
+        response.body = 'User name or password is incorrect'
         respnse.status = 401;
         return;
     }
 
-
+    console.log(userObj);
     await session.set('authenticated', true);
     await session.set('user', {
-        id: userObj.id
+        id: userObj.id,
+        email: userObj.email
     });
-    response.body = 'Authentication successful!';
+    response.redirect ('/behavior/summary')
 }
 
-const logout = async ({session}) => {
+const logout = async ({session, response}) => {
+    console.log("Logging out");
     await session.set('authenticated', false);
     await session.set('user', null);
 
-    response.body = 'Logged out';
+    response.redirect('/');
 }
 
 const registerUser = async ({request, response, session}) => {
@@ -63,6 +67,16 @@ const registerUser = async ({request, response, session}) => {
     }
 }
 
-export {login, logout, registerUser}
+const showLoginPage = async({render, session}) => {
+    const user = await session.get('user')
+    render('/auth/login.ejs', {user: user});
+}
+
+const showRegistrationPage = async({render, session}) => {
+    const user = await session.get('user');
+    render('/auth/register.ejs',{ user: user});
+}
+
+export {login, showLoginPage, logout, registerUser,showRegistrationPage}
 
 

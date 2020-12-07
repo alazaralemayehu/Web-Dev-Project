@@ -1,0 +1,22 @@
+<%- include('../partials/header.ejs') %>
+<div class="row">
+    <div class="col">
+        <h1>Weekly Report</h1>
+        <ul class="list-group">
+            <% data.weekly_summary.forEach((w_summary) => { %>
+                <li class="list-group-item"><%= w_summary.activity_type %>: <%= (w_summary.round)%></li>
+            <% }); %>
+        </ul>
+    </div>
+
+    <div class="col">
+        <h1>Monthly Report</h1>
+        <ul class="list-group">
+            <% data.monthly_summary.forEach((m_summary) => { %>
+                <li class="list-group-item"><%= m_summary.activity_type %>: <%= (m_summary.round) %></li>
+            <% }); %>
+        </ul>
+    </div>
+</div>
+
+<%- include('../partials/footer.ejs') %>
