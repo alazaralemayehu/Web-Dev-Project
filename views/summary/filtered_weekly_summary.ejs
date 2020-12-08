@@ -1,0 +1,30 @@
+<%- include('../partials/header.ejs') %>
+<div class="row">
+    <div class="col">
+        <form action="/filter_weekly_summary" method="POST">
+            <div class="form-group">
+              <label for="formGroupExampleInput">Example label</label>
+              <input type="week" name = "week" class="form-control" id="formGroupExampleInput" placeholder="Example input">
+            </div>
+            <input type="submit" value="Submit Filter!">
+            
+          </form>
+        
+          <% if (week && year) { %> 
+          <div class="col">
+            <h1>Weekly Report For week <%= week %> of year <%= year %>  </h1>
+            <ul class="list-group">
+                <% data.weekly_summary.forEach((w_summary) => { %>
+                    <li class="list-group-item"><%= w_summary.activity_type %>: <%= (w_summary.round)%></li>
+                <% }); %>
+            </ul>
+        </div>
+        <% } %> 
+        
+    </div>
+
+    
+</div>
+
+
+<%- include('../partials/footer.ejs') %>

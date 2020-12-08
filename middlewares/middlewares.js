@@ -8,8 +8,15 @@ const errorMiddleware = async(context, next) => {
   }
 }
 
-const requestInformationMiddleware = async({ request }, next) => {
-  console.log(`${request.method} request is made to ${request.url.pathname}`);
+const requestInformationMiddleware = async({ request, session }, next) => {
+  const user = await session.get('user');
+  console.log(user);
+  let user_id = 'anonymous';
+  const date = new Date().toLocaleDateString();
+  if (user) {
+    user_id = user.id;
+  } 
+  console.log(`${request.method} request is made to ${request.url.pathname} by user of id ${user_id} at ${date}`);
   await next();
 }
 

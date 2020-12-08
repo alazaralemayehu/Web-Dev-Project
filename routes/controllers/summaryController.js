@@ -16,13 +16,13 @@ const  getWeeklyFilterForm = async(context) => {
     const user= (await context.session.get('user'));
 
     const year  =null; const week = null;
-    context.render('/summary/filtered_summary.ejs', {user:user, week: week, year: year});
+    context.render('/summary/filtered_weekly_summary.ejs', {user:user, week: week, year: year});
 }
+
 const showWeeklyFilteredSummary= async(context) => {
     const body =  context.request.body();
     const params = await body.value;
     const user= (await context.session.get('user'));
-
 
     const week_input = params.get('week');
     // https://stackoverflow.com/questions/8803151/how-to-get-first-date-and-last-date-of-the-week-from-week-number-and-year
@@ -31,18 +31,36 @@ const showWeeklyFilteredSummary= async(context) => {
     let week = (splitted_week[1].split(""));
     week.shift();
     week = Number(week.join(""))
-    const yearweek = year+week;
-    console.log(week);
-    const d = new Date("Jan 01, " + year + " 00:00:00");
-    const w = d.getTime() + 604800000 * (week - 1);
-    
-    const day = new Date(w);
-
-
     const data = await summaryService.getWeeklyFilteredSummary(year, week,3);
     console.log(data);
 
-    context.render('/summary/filtered_summary.ejs', {data: data, user: user, week: week, year: year})
-
+    context.render('/summary/filtered_weekly_summary.ejs', {data: data, user: user, week: week, year: year})
 }
-export {showSummary, showWeeklyFilteredSummary, getWeeklyFilterForm, filter_monthly_summary};
+
+const getMonthlyFilterForm = async (context) => {
+    const user = (await context.session.get('user'));
+    const year = null; const month= null;
+    context.render ('/summary/filtered_monthly_summary.ejs', {user:user, month: month, year: year}); 
+}
+
+
+const showMonthlyFilteredSummary= async(context) => {
+    const body =  context.request.body();
+    const params = await body.value;
+    const user= (await context.session.get('user'));
+
+    const month_input = params.get('month');
+    const splitted_month = month_input.split('-');
+    const month = Number(splitted_month[1]);
+    const year = Number(splitted_month[0]);
+
+    const data = await summaryService.getMonthlyFilteredSummary(year, month, 3);
+    console.log(month_input);
+
+    context.render('/summary/filtered_monthly_summary.ejs', {data: data, user: user, month: month, year: year})
+}
+
+
+
+
+export {showSummary, getWeeklyFilterForm , showWeeklyFilteredSummary, getMonthlyFilterForm, showMonthlyFilteredSummary};
