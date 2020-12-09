@@ -20,7 +20,7 @@ const addNewReport = async(data) => {
     } else {
         const alreadyExists = await executeQuery("SELECT * FROM activities where (date = $1 AND time_of_day =$2)", date, time_of_day);
         console.log(alreadyExists);
-        if (alreadyExists.rowCount == 0) {
+        if (alreadyExists.rowCount === 0) {
             let res = await executeQuery("INSERT INTO activities (activity_type, time_of_day, time_spent, date, user_id) VALUES ($1,$2,$3,$4,$5)", 'exercise_duration', time_of_day, exercise_duration, date, user_id);
             res = await executeQuery("INSERT INTO activities (activity_type, time_of_day, time_spent, date, user_id) VALUES ($1,$2,$3,$4,$5)", 'studying_duration', time_of_day, studying_duration, date, user_id);
             res = await executeQuery("INSERT INTO activities (activity_type, time_of_day, time_spent, date, user_id) VALUES ($1,$2,$3,$4,$5)", 'food_quality', time_of_day, food_quality, date, user_id);
@@ -40,21 +40,23 @@ const addNewReport = async(data) => {
 }
 
 
-const getNewsItem = async(id) => {
-    const res = await executeQuery("SELECT * FROM news WHERE id = $1", id);
-    if (!res) {
-        return null;
+const isMorningReportSubmitted = async(id) => {
+    let morning = false;
+    let evening = false;
+
+    let res = await executeQuery("SELECT * FROM activities WHERE (id = $1 AND date= now() AND time_of_day = 'morning')", id);
+    if (res.rowCount ===0) {
+        morning = true;
     }
 
-    return res.rowsOfObjects()[0];
+    res = await executeQuery("SELECT * FROM activities WHERE (id = $1 AND date= now() AND time_of_day = 'evening')", id);
+    if (res.rowCount ===0) {
+        evening = true;
+    }
+
+return [morning, evening]
 }
 
-const deleteNewsItem = async(id) => {
-    await executeQuery("DELETE FROM news WHERE id = $1", id);
-}
 
-const addNewsItem = async(title, content) => {
-    await executeQuery("INSERT INTO news (title, content) VALUES ($1, $2)", title, content);
-}
 
-export { getNewsItem, deleteNewsItem, addNewReport };
+export { addNewReport, isMorningReportSubmitted };

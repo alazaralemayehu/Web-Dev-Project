@@ -31,7 +31,7 @@ const showWeeklyFilteredSummary= async(context) => {
     let week = (splitted_week[1].split(""));
     week.shift();
     week = Number(week.join(""))
-    const data = await summaryService.getWeeklyFilteredSummary(year, week,3);
+    const data = await summaryService.getWeeklyFilteredSummary(year, week,user.id);
     console.log(data);
 
     context.render('/summary/filtered_weekly_summary.ejs', {data: data, user: user, week: week, year: year})
@@ -54,7 +54,7 @@ const showMonthlyFilteredSummary= async(context) => {
     const month = Number(splitted_month[1]);
     const year = Number(splitted_month[0]);
 
-    const data = await summaryService.getMonthlyFilteredSummary(year, month, 3);
+    const data = await summaryService.getMonthlyFilteredSummary(year, month, user.id);
     console.log(month_input);
 
     context.render('/summary/filtered_monthly_summary.ejs', {data: data, user: user, month: month, year: year})

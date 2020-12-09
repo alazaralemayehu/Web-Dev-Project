@@ -2,20 +2,26 @@
 
 <h1>Register!</h1>
 
-<form class="form-control" method="POST" action="/auth/register">
+<form class="form-control" method="POST" action="/auth/registration">
     <div class="form-group">
       <label for="email">Email address</label>
-      <input type="email" name="email" class="form-control" id="email" placeholder="email@example.com">
+      <input type="email" name="email" class="form-control" id="email" placeholder="email@example.com" value="<%=email %>">
+
+      <%- include('../partials/error.ejs', { errors: errors, attribute: 'email'}) %>
+      <%- include('../partials/error.ejs', { errors: errors, attribute: 'duplicateEmail'}) %>
     </div>
     <div class="form-group">
       <label for="password">Password</label>
       <input type="password" name="password" class="form-control" id="password" placeholder="Password">
+
+      <%- include('../partials/error.ejs', { errors: errors, attribute: 'password'}) %>
+      <%- include('../partials/error.ejs', { errors: errors, attribute: 'passwordMismatch'}) %>
     </div>
 
     <div class="form-group">
         <label for="verification">Your password again: </label>
         <input type="password" name="verification" class="form-control" id="verification" placeholder="Password again"/>
     </div>
-    <button type="submit" class="btn btn-primary">Sign in</button>
+    <button type="submit" class="btn btn-primary">Register</button>
 </form>
 <%- include('../partials/footer.ejs') %>

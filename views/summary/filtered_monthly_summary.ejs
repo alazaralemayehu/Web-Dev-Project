@@ -3,15 +3,19 @@
     <div class="col">
         <form action="/filter_monthly_summary" method="POST">
             <div class="form-group">
-              <label for="month">Example label</label>
+              <label for="month">Month </label>
               <input type="month" name = "month" class="form-control" id="month" placeholder="">
             </div>
-            <input type="submit" value="Submit Filter!">
+            <input type="submit" value="Submit Month!">
             
           </form>
 
           <% if (month && year) { %> 
             <div class="col">
+              <% if (data.monthly_summary.length === 0) {%>
+                <p class="alert alert-info">No data for this Month  exists</p>
+              <% }  else{ %>  
+            
               <h1>Monthly Report For month <%= month %> of year <%= year %>  </h1>
               <ul class="list-group">
                   <% data.monthly_summary.forEach((m_summary) => { %>
@@ -19,7 +23,11 @@
                   <% }); %>
               </ul>
           </div>
-          <% } %> 
+              <% } %> 
+          
+        <% } else {%>
+          <p class="alert alert-info">Please select month</p>
+      <% } %> 
     </div>
 
 </div>

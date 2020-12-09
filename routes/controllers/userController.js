@@ -1,11 +1,11 @@
 import { getUser, addNewUser } from "../../services/userService.js";
 import * as bcrypt from "https://deno.land/x/bcrypt@v0.2.4/mod.ts";
+import  {validate, required, minLength,isEmail} from '../../deps.js';
 
-
-const login = async({request, response, session}) => {
+const login = async({request, response, session, render}) => {
     const body = request.body();
     const params = await body.value;
-
+    let errors = []
     const email = params.get('email');
     const password = params.get('password');
 
@@ -13,16 +13,25 @@ const login = async({request, response, session}) => {
     const userObj = await getUser(email);
     if (userObj === null) {
         response.status = 401;
+        const user = await session.get('user')
+
+        errors.InvalidUsernamePassword =  {InvalidUsernamePassword:'Invalid username or password'};
+        render('/auth/login.ejs', {errors: errors, user: user});
+        return;
+
         return;
     }
 
     // take the first row from the results
     const hash = userObj.password;
-
+    
     const passwordCorrect = await bcrypt.compare(password, hash);
     if (!passwordCorrect) {
-        response.body = 'User name or password is incorrect'
-        respnse.status = 401;
+        const user = await session.get('user')
+
+        errors.InvalidUsernamePassword =  {InvalidUsernamePassword:'Invalid username or password'};
+        response.status = 401;
+        render('/auth/login.ejs', {errors: errors, user: user});
         return;
     }
 
@@ -43,38 +52,74 @@ const logout = async ({session, response}) => {
     response.redirect('/');
 }
 
-const registerUser = async ({request, response, session}) => {
+const registerUser = async ({request, response, render, session}) => {
+
+    const validationRules = {
+        password: [required, minLength(4)],
+        email: [required, isEmail],
+        verification: [required]
+    };
+
     const body = request.body();
     const params = await body.value;
     
     const email = params.get('email');
     const password = params.get('password');
     const verification = params.get('verification');
-  
+    const user = await session.get('user');
+
+    const data = {
+        user: user,
+        email: email,
+        password: password,
+        verification: verification, 
+        errors: []
+    };
+
+    let [passes, errors] = await validate(data, validationRules);
     // here, we would validate the data, e.g. checking that the 
     // email really is an email
+        console.log(errors);
   
     if (password !== verification) {
-      response.body = 'The entered passwords did not match';
+        passes = false;
+        errors.passwordMismatch= {passwordMismatch: 'The passwords do not match.'};
+    } 
+    
+    const userExists = await getUser(email);
+    if (userExists) {
+        errors.duplicateEmail= {duplicateEmail: 'The Email address already exists.'};
+        passes = false;
+    }
+  
+    if (!passes) {
+        data.errors = errors;
+        render('/auth/register.ejs',{data, user:user, email: data.email, errors: data.errors});   
     } else {
-        const userExists = await getUser(email);
-        if (userExists !== null) {
-            response.body = 'Account with this email already exists';
-        } else {
-            await addNewUser(email, password);
-            response.body = 'User succesfully created'; 
-        }
+        await addNewUser(email, password);
+        await session.set('authenticated', true);
+        await session.set('user', {
+            id: userExists.id,
+            email: userExists.email
+        });
+        response.redirect('/behavior/reporting'); 
     }
 }
 
 const showLoginPage = async({render, session}) => {
     const user = await session.get('user')
-    render('/auth/login.ejs', {user: user});
+    render('/auth/login.ejs', {user: user, errors:''});
 }
 
 const showRegistrationPage = async({render, session}) => {
     const user = await session.get('user');
-    render('/auth/register.ejs',{ user: user});
+
+    const data = {
+        email: "",
+        user: user,
+        errors: null
+    };
+    render('/auth/register.ejs', {data, user:user, email: "", errors: null});
 }
 
 export {login, showLoginPage, logout, registerUser,showRegistrationPage}

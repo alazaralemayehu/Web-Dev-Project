@@ -17,7 +17,7 @@ app.use(viewEngine(oakAdapter, ejsEngine, {
 }));
 
 app.use(middleware.errorMiddleware);
-// app.use(authMiddleware);
+app.use(authMiddleware);
 app.use(middleware.requestInformationMiddleware);
 app.use(middleware.serveStaticFilesMiddleware);
 

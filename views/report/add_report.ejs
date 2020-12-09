@@ -11,14 +11,21 @@
             </select>
             
         </div>
+
         <div id="morning" style = "display: none;">
+          <% if (data.morning) { %>
+             <p class="alert alert-info"> Remember: Morning behaviour is already submitted, you are editing the information you have submitted; </p>
+          <% }%>
             <div>
-                <label for="sleep_duration">Sleep Duration: </label><input type="number" step=".1" name="sleep_duration" id="sleep_duration">
+                <label for="sleep_duration">Sleep Duration: </label><input type="number" step=".1" name="sleep_duration" id="sleep_duration" value="<%= data.sleep_duration%>">
+                <%- include('../partials/error.ejs', { errors: errors, attribute: 'sleep_duration'}) %>
            </div> 
     
            <div>
+              
                 <label for="sleep_quality">Sleep Quality: </label> 
                 <label class="radio-inline">
+                  
                     <input type="radio" name="sleep_quality" value="1">1
                   </label>
                   <label class="radio-inline">
@@ -33,6 +40,8 @@
                   <label class="radio-inline">
                     <input type="radio" name="sleep_quality" value="5"> 5
                   </label>
+                <%- include('../partials/error.ejs', { errors: errors, attribute: 'sleep_quality'}) %>
+
                 <!-- <input type="number" name="sleep_quality" id="sleep_quality"> -->
                 <!-- <input type="radio" name="sleep_quality" id="sleep_quality">
                 
@@ -48,12 +57,19 @@
         </div>
          
         <div id="evening"  style = "display: none;">
+          <% if (data.evening) { %>
+            <p class="alert alert-info">Remember: Evening behaviour is already submitted, you are editing the information you have submitted; </p>
+         <% }%>
             <div>
                 <label for="exercise_duration">Exercise Duration: </label><input type="number" step=".1" name="exercise_duration" id="exercise_duration">
+                <%- include('../partials/error.ejs', { errors: errors, attribute: 'exercise_duration'}) %>
+
            </div> 
     
            <div>
                 <label for="studying_duration">Study Duration: </label> <input type="number" name="studying_duration" id="studying_duration">
+                <%- include('../partials/error.ejs', { errors: errors, attribute: 'studying_duration'}) %>
+
             </div>
     
             <div>
@@ -75,6 +91,8 @@
                     <input type="radio" name="food_quality" value="5"> 5
                   </label>
             </div>
+            <%- include('../partials/error.ejs', { errors: errors, attribute: 'food_quality'}) %>
+
              </div>
         </div>
 
@@ -98,9 +116,11 @@
                     <input type="radio" name="generic_mood" value="5"> 5
                   </label>
             </div>
+            <%- include('../partials/error.ejs', { errors: errors, attribute: 'generic_mood'}) %>
+
             
             <div>
-                <label for="date">Date </label><input type="date" name="date" id="date"> <label for="date_now" value="<%= current_date %>">
+                <label for="date">Date </label><input type="date" name="date" id="date"> <label for="date_now" value="">
             </div>
         </div>
        
