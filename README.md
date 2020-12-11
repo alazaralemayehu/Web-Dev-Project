@@ -71,3 +71,4 @@ This project is made for web software development course.
 
 5. You can find the working application in the https://deno-final-project-alazar.herokuapp.com
 
+NB: For better experience and testing of some checklist, please use Google Chrome browser.
