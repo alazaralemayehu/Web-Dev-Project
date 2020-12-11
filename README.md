@@ -69,5 +69,5 @@ This project is made for web software development course.
     deno test --allow-all --unstable
 ```
 
-5. You can find the working application in the @https://deno-final-project-alazar.herokuapp.com
+5. You can find the working application in the https://deno-final-project-alazar.herokuapp.com
 
