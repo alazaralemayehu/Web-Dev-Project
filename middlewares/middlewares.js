@@ -10,7 +10,6 @@ const errorMiddleware = async(context, next) => {
 
 const requestInformationMiddleware = async({ request, session }, next) => {
   const user = await session.get('user');
-  console.log(user);
   let user_id = 'anonymous';
   const date = new Date().toLocaleDateString();
   if (user) {

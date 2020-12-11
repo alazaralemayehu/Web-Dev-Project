@@ -91,7 +91,6 @@ Deno.test({
     async fn() {
         // await executeQuery('delete from activities');
         data.time_of_day = 'evening';
-        console.log(data);
         // Adding user to get new user_id
         const email = `email${Math.floor(Math.random() * 1000000)}@gmail.com`;
         const password = `email${Math.floor(Math.random() * 1000000)}@gmail.com`;
@@ -106,7 +105,6 @@ Deno.test({
         await addNewReport(data);
 
         const [morning, evening] = await isReportSubmitted(user_id);
-        console.log(evening)
         assertEquals(evening, true);
     },
     sanitizeResources: false,

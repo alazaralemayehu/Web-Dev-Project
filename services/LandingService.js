@@ -19,7 +19,6 @@ const getSummary = async(user_id) => {
         data.weekly_summary = res_weekly.rowsOfObjects();
     }
   
-    console.log(data);
     return data;
 
 

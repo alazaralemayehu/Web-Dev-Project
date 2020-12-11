@@ -2,7 +2,6 @@ import * as summaryService from '../../services/summaryService.js';
 import  {validate, required, isNumeric,minNumber, maxNumber} from '../../deps.js';
 
 const showSummary = async(context) => {
-    console.log("I am here");
 
     const user= (await context.session.get('user'));
     
@@ -32,7 +31,6 @@ const showWeeklyFilteredSummary= async(context) => {
     week.shift();
     week = Number(week.join(""))
     const data = await summaryService.getWeeklyFilteredSummary(year, week,user.id);
-    console.log(data);
 
     context.render('/summary/filtered_weekly_summary.ejs', {data: data, user: user, week: week, year: year})
 }
@@ -55,7 +53,6 @@ const showMonthlyFilteredSummary= async(context) => {
     const year = Number(splitted_month[0]);
 
     const data = await summaryService.getMonthlyFilteredSummary(year, month, user.id);
-    console.log(month_input);
 
     context.render('/summary/filtered_monthly_summary.ejs', {data: data, user: user, month: month, year: year})
 }

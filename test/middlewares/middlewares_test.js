@@ -36,3 +36,15 @@ Deno.test({
 });
 
 
+
+Deno.test({
+    name: "Get /auth/registration returns 200", 
+    async fn() {
+        const testClient = await superoak(app);
+        await testClient.get("/auth/registration").expect(200);
+    },
+    sanitizeResources: false,
+    sanitizeOps: false
+});
+
+

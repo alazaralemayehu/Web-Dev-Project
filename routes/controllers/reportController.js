@@ -18,9 +18,7 @@ const showAddReportForm = async ({render, session}) => {
         time_of_day: "", 
         errors: null, 
     };
-    console.log('hello');
     const current_date = new Date(Date.now());
-    console.log(current_date);
     render('./report/add_report.ejs', {user:user, data: data, errors:null})
 }
 
@@ -66,7 +64,6 @@ const addReport = async ({render, request, response, session}) => {
     data.studying_duration = Number(params.get('studying_duration'));
     data.food_quality = Number(params.get('food_quality'));
     data.exercise_duration = Number(params.get('exercise_duration'));
-    console.log(data);
     let passes = null;
     let errors = null;
     if (data.time_of_day === 'morning') {
@@ -74,7 +71,6 @@ const addReport = async ({render, request, response, session}) => {
     } else { 
         [passes, errors] = await validate(data, validationRulesForEvening);    
     }
-    console.log([passes, errors])    
     if (!passes) {
         data.errors = errors;
         render('./report/add_report.ejs', { data: data, user : user, errors: errors});

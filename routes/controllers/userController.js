@@ -16,8 +16,6 @@ const login = async({request, response, session, render}) => {
         const user = await session.get('user')
 
         errors.InvalidUsernamePassword =  {InvalidUsernamePassword:'Invalid username or password'};
-        console.log("status")
-        console.log(response.status);
         render('/auth/login.ejs', {errors: errors, user: user});
         return;
 
@@ -36,7 +34,7 @@ const login = async({request, response, session, render}) => {
         return;
     }
 
-    console.log(userObj);
+    (userObj);
     await session.set('authenticated', true);
     await session.set('user', {
         id: userObj.id,
@@ -46,7 +44,6 @@ const login = async({request, response, session, render}) => {
 }
 
 const logout = async ({session, response}) => {
-    console.log("Logging out");
     await session.set('authenticated', false);
     await session.set('user', null);
 
@@ -80,7 +77,6 @@ const registerUser = async ({request, response, render, session}) => {
     let [passes, errors] = await validate(data, validationRules);
     // here, we would validate the data, e.g. checking that the 
     // email really is an email
-        console.log(errors);
   
     if (password !== verification) {
         passes = false;

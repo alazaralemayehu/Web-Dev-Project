@@ -98,4 +98,17 @@ Deno.test({
 });
 
 
+Deno.test({
+
+  name: "GET request to /behavior/summary should return login page!", 
+  async fn() {
+      const testClient = await superoak(app);
+      await testClient.get("/behavior/summary").expect(expected_login_page);
+      // assertMatch(response, new RegExp('<h1>Login!</h1>'))
+  },
+  sanitizeResources: false,
+  sanitizeOps: false
+});
+
+
 

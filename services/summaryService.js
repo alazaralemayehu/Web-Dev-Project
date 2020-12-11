@@ -34,7 +34,6 @@ const getSummary = async(user_id) => {
         data.weekly_summary = res_weekly.rowsOfObjects();
     }
   
-    console.log(data);
     return data;
 }
 
@@ -108,7 +107,6 @@ const getWeeklySummaryUnfiltered = async() => {
 
 
 const getDailySummary = async(year, month, day) => {
-    console.log(year, month,day);
     const res_weekly = await executeQuery(`
     SELECT activity_type, ROUND(AVG(time_spent),2) FROM activities WHERE (date_part('year', date)=$1 and date_part('month', date) =$2 and date_part('day', date) = $3 AND activity_type ='sleep_duration') group by activity_type union
     SELECT activity_type, ROUND(AVG(time_spent),2) FROM activities WHERE (date_part('year', date)=$1 and date_part('month', date) =$2 and date_part('day', date) = $3 AND activity_type ='sleep_quality') group by activity_type union

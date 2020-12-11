@@ -5,14 +5,11 @@ const addNewReport = async(data) => {
 
     if (time_of_day === 'morning') {
         const alreadyExists = await executeQuery("SELECT * FROM activities where (date = $1 AND time_of_day =$2)", date, time_of_day);
-        console.log("add")
-        console.log(alreadyExists);
         if (alreadyExists.rowCount === 0) {
             let res = await executeQuery("INSERT INTO activities (activity_type, time_of_day, time_spent, date, user_id) VALUES ($1,$2,$3,$4,$5)", 'sleep_duration', time_of_day, sleep_duration, date, user_id);
             res = await executeQuery("INSERT INTO activities (activity_type, time_of_day, time_spent, date, user_id) VALUES ($1,$2,$3,$4,$5)", 'sleep_quality', time_of_day, sleep_quality, date, user_id);
             res = await executeQuery("INSERT INTO activities (activity_type, time_of_day, time_spent, date, user_id) VALUES ($1,$2,$3,$4,$5)", 'generic_mood', time_of_day, generic_mood, date, user_id);
         } else {
-            console.log('update ');
             let res = await executeQuery("UPDATE  activities SET time_spent = $1 WHERE (date = $2 AND activity_type= $3)", sleep_duration, date, 'sleep_duration');
             res = await executeQuery("UPDATE  activities SET time_spent = $1 WHERE (date = $2 AND activity_type= $3)", sleep_quality, date, 'sleep_quality');
             res = await executeQuery("UPDATE  activities SET time_spent = $1 WHERE (date = $2 AND activity_type= $3)", generic_mood, date, 'generic_mood');
@@ -26,7 +23,6 @@ const addNewReport = async(data) => {
             res = await executeQuery("INSERT INTO activities (activity_type, time_of_day, time_spent, date, user_id) VALUES ($1,$2,$3,$4,$5)", 'food_quality', time_of_day, food_quality, date, user_id);
             res = await executeQuery("INSERT INTO activities (activity_type, time_of_day, time_spent, date, user_id) VALUES ($1,$2,$3,$4,$5)", 'generic_mood', time_of_day, generic_mood, date, user_id);
         } else {
-            console.log('update ');
             let res = await executeQuery("UPDATE  activities SET time_spent = $1 WHERE (date = $2 AND activity_type= $3)", exercise_duration, date, 'exercise_duration');
             res = await executeQuery("UPDATE  activities SET time_spent = $1 WHERE (date = $2 AND activity_type= $3)", studying_duration, date, 'studying_duration');
             res = await executeQuery("UPDATE  activities SET time_spent = $1 WHERE (date = $2 AND activity_type= $3)", food_quality, date, 'food_quality');
@@ -50,7 +46,6 @@ const isReportSubmitted = async(id) => {
     }
 
     const res_evening = await executeQuery("SELECT * FROM activities WHERE (user_id = $1 AND date=CURRENT_DATE AND time_of_day = $2)", id, 'evening');
-    console.log(res_evening)
     if (res_evening && res_evening.rowCount > 0) {
         evening = true;
     }
