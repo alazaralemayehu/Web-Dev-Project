@@ -29,6 +29,7 @@ This project is made for web software development course.
 ```
 
 2. After creating necessary table and indices, setup up your database in eithe of the following way:
+
     2.1. create a database object like the following
 
         hostname: "<hostname>",
