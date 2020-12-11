@@ -3,10 +3,11 @@ import { executeQuery } from '../database/database.js';
 const addNewReport = async(data) => {
     const {time_of_day, sleep_duration,sleep_quality, generic_mood, exercise_duration, studying_duration, food_quality, date, user_id} = data;
 
-    if (time_of_day == 'morning') {
+    if (time_of_day === 'morning') {
         const alreadyExists = await executeQuery("SELECT * FROM activities where (date = $1 AND time_of_day =$2)", date, time_of_day);
-        console.log(alreadyExists.rows);
-        if (alreadyExists.rowCount == 0) {
+        console.log("add")
+        console.log(alreadyExists);
+        if (alreadyExists.rowCount === 0) {
             let res = await executeQuery("INSERT INTO activities (activity_type, time_of_day, time_spent, date, user_id) VALUES ($1,$2,$3,$4,$5)", 'sleep_duration', time_of_day, sleep_duration, date, user_id);
             res = await executeQuery("INSERT INTO activities (activity_type, time_of_day, time_spent, date, user_id) VALUES ($1,$2,$3,$4,$5)", 'sleep_quality', time_of_day, sleep_quality, date, user_id);
             res = await executeQuery("INSERT INTO activities (activity_type, time_of_day, time_spent, date, user_id) VALUES ($1,$2,$3,$4,$5)", 'generic_mood', time_of_day, generic_mood, date, user_id);
@@ -19,7 +20,6 @@ const addNewReport = async(data) => {
         }           
     } else {
         const alreadyExists = await executeQuery("SELECT * FROM activities where (date = $1 AND time_of_day =$2)", date, time_of_day);
-        console.log(alreadyExists);
         if (alreadyExists.rowCount === 0) {
             let res = await executeQuery("INSERT INTO activities (activity_type, time_of_day, time_spent, date, user_id) VALUES ($1,$2,$3,$4,$5)", 'exercise_duration', time_of_day, exercise_duration, date, user_id);
             res = await executeQuery("INSERT INTO activities (activity_type, time_of_day, time_spent, date, user_id) VALUES ($1,$2,$3,$4,$5)", 'studying_duration', time_of_day, studying_duration, date, user_id);
@@ -40,17 +40,18 @@ const addNewReport = async(data) => {
 }
 
 
-const isMorningReportSubmitted = async(id) => {
+const isReportSubmitted = async(id) => {
     let morning = false;
     let evening = false;
 
-    let res = await executeQuery("SELECT * FROM activities WHERE (id = $1 AND date= now() AND time_of_day = 'morning')", id);
-    if (res.rowCount ===0) {
+    let res = await executeQuery("SELECT * FROM activities WHERE (user_id = $1 AND date=CURRENT_DATE AND time_of_day = $2)", id, 'morning');
+    if (res && res.rowCount > 0) {
         morning = true;
     }
 
-    res = await executeQuery("SELECT * FROM activities WHERE (id = $1 AND date= now() AND time_of_day = 'evening')", id);
-    if (res.rowCount ===0) {
+    const res_evening = await executeQuery("SELECT * FROM activities WHERE (user_id = $1 AND date=CURRENT_DATE AND time_of_day = $2)", id, 'evening');
+    console.log(res_evening)
+    if (res_evening && res_evening.rowCount > 0) {
         evening = true;
     }
 
@@ -59,4 +60,4 @@ return [morning, evening]
 
 
 
-export { addNewReport, isMorningReportSubmitted };
+export { addNewReport, isReportSubmitted };

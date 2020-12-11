@@ -4,7 +4,7 @@ import  {validate, required, isNumeric,minNumber, numberBetween} from '../../dep
 const showAddReportForm = async ({render, session}) => {
     const user = (await session.get('user'));
 
-    const [morning, evening] = await reportService.isMorningReportSubmitted(user.id);
+    const [morning, evening] = await reportService.isReportSubmitted(user.id);
     const data = {
         sleep_duration: "",
         sleep_quality: "",

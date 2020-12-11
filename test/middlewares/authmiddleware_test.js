@@ -1,4 +1,8 @@
-<!DOCTYPE html>
+import { assertEquals , assertMatch} from "https://deno.land/std@0.78.0/testing/asserts.ts";
+import { superoak } from "https://deno.land/x/superoak@2.3.1/mod.ts";
+import {authMiddleware} from "../../middlewares/AuthMiddleware.js";
+import {app} from '../../app.js';
+const expected_login_page = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -38,16 +42,7 @@
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <% if (user) { %>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <%= user.email%>
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="/auth/logout">Log Out</a>
-              </div>
-            </li>
-            <%  } else {%> 
+             
             <li class="nav-item">
               <a href="/auth/registration" class="nav-link"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
             </li>
@@ -55,7 +50,52 @@
               <a href="/auth/login" class="nav-link"><span class="glyphicon glyphicon-log-in"></span> Login</a>
             </li>
           </ul>
-        <% }  %>
+        
         </div>
       </nav>
     <div  class="container">
+<h1>Login!</h1>
+<form class="form-control" method="POST" action="/auth/login">
+    
+    <div class="form-group">
+      <label for="email">Email address</label>
+      <input type="email" name="email" class="form-control" id="email" placeholder="email@example.com">
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" name="password" class="form-control" id="password" placeholder="Password">
+    </div>
+    <button type="submit" class="btn btn-primary">Sign in</button>
+    <div>New to the website please  <a href="/auth/registration">register</a></div>
+</form>
+
+        </div>
+
+    </body>
+</html>`;
+
+Deno.test({
+    name: "GET request to /api/summary should return 200", 
+    async fn() {
+        const testClient = await superoak(app);
+       await testClient.get("/auth/login")
+        .expect(200);
+    },
+    sanitizeResources: false,
+    sanitizeOps: false
+});
+
+Deno.test({
+
+    name: "GET request to /behavior/reporting should return login page!", 
+    async fn() {
+        const testClient = await superoak(app);
+        await testClient.get("/behavior/reporting").expect(expected_login_page);
+        // assertMatch(response, new RegExp('<h1>Login!</h1>'))
+    },
+    sanitizeResources: false,
+    sanitizeOps: false
+});
+
+
+

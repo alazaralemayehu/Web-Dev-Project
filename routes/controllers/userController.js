@@ -16,10 +16,11 @@ const login = async({request, response, session, render}) => {
         const user = await session.get('user')
 
         errors.InvalidUsernamePassword =  {InvalidUsernamePassword:'Invalid username or password'};
+        console.log("status")
+        console.log(response.status);
         render('/auth/login.ejs', {errors: errors, user: user});
         return;
 
-        return;
     }
 
     // take the first row from the results
@@ -97,10 +98,12 @@ const registerUser = async ({request, response, render, session}) => {
         render('/auth/register.ejs',{data, user:user, email: data.email, errors: data.errors});   
     } else {
         await addNewUser(email, password);
+        const user = await getUser(email);
+
         await session.set('authenticated', true);
         await session.set('user', {
-            id: userExists.id,
-            email: userExists.email
+            id: user.id,
+            email: user.email
         });
         response.redirect('/behavior/reporting'); 
     }

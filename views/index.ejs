@@ -1,5 +1,13 @@
 <%- include('./partials/header.ejs') %>
+
+<h1> Personal Monitor </h1>
+<p>This application is gives you an opportunity to track your daily activities and improve them. </p>
+<p>The application can calculate your weekly or monthly averages for different activties.</p>
+    <h5>You can see some information from the database at a glance.</h5>
+   
+    <h3> Thank you for using this application!</h3>
 <h1>Last Two days report for all users looks like</h1>
+<h4>Today looks <%= message %> </h4>
 <ul>
     <% data.weekly_summary.forEach((w_summary) => { %>
         <li><%= w_summary.activity_type %>: <%= (w_summary.round)%></li>

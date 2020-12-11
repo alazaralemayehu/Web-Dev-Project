@@ -17,9 +17,9 @@ app.use(viewEngine(oakAdapter, ejsEngine, {
 }));
 
 app.use(middleware.errorMiddleware);
-app.use(authMiddleware);
 app.use(middleware.requestInformationMiddleware);
 app.use(middleware.serveStaticFilesMiddleware);
+app.use(authMiddleware);
 
 app.use(router.routes());
 
@@ -28,3 +28,4 @@ if (!Deno.env.get('TEST_ENVIRONMENT')) {
 }
   
 export default app;
+export {app};

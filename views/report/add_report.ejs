@@ -6,6 +6,8 @@
         <div>
             <label for="time_of_day">time of day</label>
             <select name="time_of_day" id="time_of_day" onchange="change_time_of_day(this)">
+
+                <option hidden disabled selected value> -- select an option -- </option>
                 <option value="morning">Morning</option>
                 <option value="evening">Evening</option>
             </select>
@@ -23,22 +25,21 @@
     
            <div>
               
-                <label for="sleep_quality">Sleep Quality: </label> 
+                <label for="sleep_quality" >Sleep Quality: </label> 
                 <label class="radio-inline">
-                  
-                    <input type="radio" name="sleep_quality" value="1">1
+                    <input type="radio" name="sleep_quality" value="1" <%= data.sleep_quality === 1 ? 'checked' : '' %> >1
                   </label>
                   <label class="radio-inline">
-                    <input type="radio" name="sleep_quality" value="2"> 2
+                    <input type="radio" name="sleep_quality" value="2" <%= data.sleep_quality === 2 ? 'checked' : '' %> > 2
                   </label>
                   <label class="radio-inline">
-                    <input type="radio" name="sleep_quality" value="3"> 3
+                    <input type="radio" name="sleep_quality" value="3" <%= data.sleep_quality === 3 ? 'checked' : '' %> > 3
                   </label>
                   <label class="radio-inline">
-                    <input type="radio" name="sleep_quality" value="4"> 4
+                    <input type="radio" name="sleep_quality" value="4" <%= data.sleep_quality === 4 ? 'checked' : '' %> > 4
                   </label>
                   <label class="radio-inline">
-                    <input type="radio" name="sleep_quality" value="5"> 5
+                    <input type="radio" name="sleep_quality" value="5" <%= data.sleep_quality === 5 ? 'checked' : '' %> > 5
                   </label>
                 <%- include('../partials/error.ejs', { errors: errors, attribute: 'sleep_quality'}) %>
 
@@ -76,19 +77,19 @@
                 <label for="food_quality"> Food Quality</label>
                  <!-- <input type="number" name="food_quality" id="food_quality"> -->
                 <label class="radio-inline">
-                    <input type="radio" name="food_quality" value="1">1
+                    <input type="radio" name="food_quality" value="1" <%= data.food_quality === 1 ? 'checked' : '' %> >1
                   </label>
                   <label class="radio-inline">
-                    <input type="radio" name="food_quality" value="2"> 2
+                    <input type="radio" name="food_quality" value="2" <%= data.food_quality === 2 ? 'checked' : '' %>> 2
                   </label>
                   <label class="radio-inline">
-                    <input type="radio" name="food_quality" value="3"> 3
+                    <input type="radio" name="food_quality" value="3" <%= data.food_quality === 3 ? 'checked' : '' %>> 3
                   </label>
                   <label class="radio-inline">
-                    <input type="radio" name="food_quality" value="4"> 4
+                    <input type="radio" name="food_quality" value="4" <%= data.food_quality === 4 ? 'checked' : '' %>> 4
                   </label>
                   <label class="radio-inline">
-                    <input type="radio" name="food_quality" value="5"> 5
+                    <input type="radio" name="food_quality" value="5" <%= data.food_quality === 5 ? 'checked' : '' %>> 5
                   </label>
             </div>
             <%- include('../partials/error.ejs', { errors: errors, attribute: 'food_quality'}) %>
@@ -101,26 +102,26 @@
                 <label for="generic_mood">Generic Mood: </label> 
                 <!-- <input type="number" name="generic_mood" id= "generic_mood"> -->
                 <label class="radio-inline">
-                    <input type="radio" name="generic_mood" value="1">1
+                    <input type="radio" name="generic_mood" value="1" <%= data.generic_mood === 1 ? 'checked' : '' %>>1
                   </label>
                   <label class="radio-inline">
-                    <input type="radio" name="generic_mood" value="2"> 2
+                    <input type="radio" name="generic_mood" value="2" <%= data.generic_mood === 2 ? 'checked' : '' %>> 2
                   </label>
                   <label class="radio-inline">
-                    <input type="radio" name="generic_mood" value="3"> 3
+                    <input type="radio" name="generic_mood" value="3" <%= data.generic_mood === 3 ? 'checked' : '' %>> 3
                   </label>
                   <label class="radio-inline">
-                    <input type="radio" name="generic_mood" value="4"> 4
+                    <input type="radio" name="generic_mood" value="4" <%= data.generic_mood === 4 ? 'checked' : '' %>> 4
                   </label>
                   <label class="radio-inline">
-                    <input type="radio" name="generic_mood" value="5"> 5
+                    <input type="radio" name="generic_mood" value="5" <%= data.generic_mood === 5 ? 'checked' : '' %>> 5
                   </label>
             </div>
             <%- include('../partials/error.ejs', { errors: errors, attribute: 'generic_mood'}) %>
 
             
             <div>
-                <label for="date">Date </label><input type="date" name="date" id="date"> <label for="date_now" value="">
+                <label for="date">Date </label><input type="date" name="date" id="date"> <label for="date_now">
             </div>
         </div>
        
@@ -129,11 +130,16 @@
 </div>
 
     <script>
+
+
+      window.onload = function() {
+          const date = new Date();
+        };
+        
     
         function change_time_of_day(selectedOption) {
             const date = new Date();
             document.getElementById('date').valueAsDate = date;
-            document.getElementById('date').setAttribute('max', new Date());
 
             document.getElementById('common').style.display = 'block';
             if (selectedOption.value === "morning") {

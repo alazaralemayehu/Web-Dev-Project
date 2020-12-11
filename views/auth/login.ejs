@@ -2,7 +2,6 @@
 <h1>Login!</h1>
 <form class="form-control" method="POST" action="/auth/login">
     <%- include('../partials/error.ejs', { errors: errors, attribute: 'InvalidUsernamePassword'}) %>
-
     <div class="form-group">
       <label for="email">Email address</label>
       <input type="email" name="email" class="form-control" id="email" placeholder="email@example.com">
@@ -12,7 +11,6 @@
       <input type="password" name="password" class="form-control" id="password" placeholder="Password">
     </div>
     <button type="submit" class="btn btn-primary">Sign in</button>
-
     <div>New to the website please  <a href="/auth/registration">register</a></div>
 </form>
 <%- include('../partials/footer.ejs') %>

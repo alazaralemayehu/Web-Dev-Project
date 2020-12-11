@@ -15,6 +15,8 @@ const addNewUser = async (email, password) => {
     const hash =  await bcrypt.hash(password);
     const user = await executeQuery("INSERT INTO users (email, password) VALUES ($1, $2);", email, hash);
 
+    return true;
+
 }
 
 export {getUser, addNewUser};
